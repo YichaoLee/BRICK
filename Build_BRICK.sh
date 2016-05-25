@@ -1,0 +1,20 @@
+#!/bin/bash
+myPath="Bin"
+if [ -d "$myPath" ]; then
+	rm -rf "$myPath"
+fi 
+if [ ! -f "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21" ]; then
+	sudo rm /usr/lib/x86_64-linux-gnu/libstdc++.so*
+	sudo cp mylib/libstdc++.so.6.0.21 /usr/lib/x86_64-linux-gnu/
+	sudo ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21 /usr/lib/x86_64-linux-gnu/libstdc++.so.6
+fi
+echo "Building Checker~~~~~~~~~~~~~~~~~~~~~~~~"
+cp mylib/lib* ../../../Release+Asserts/lib/
+make
+mkdir "$myPath"
+sudo rm -r /usr/lib/buildCFG.so
+sudo ln -s ../../../Release+Asserts/lib/buildCFG.so /usr/lib/buildCFG.so
+g++ verify.cpp -o Bin/BRICK
+sudo chmod -R 777 Bin
+echo "Building finished!-----------------------Start run program in Directory Bin"
+
